@@ -9,20 +9,20 @@ class CardImageList extends StatefulWidget {
   late BlocUser userBloc;
   late User user;
 
-  CardImageList(@required this.user);
+  CardImageList(this.user, {Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _cardImageList();
+    return _CardImageList();
   }
 }
 
-class _cardImageList extends State<CardImageList> {
+class _CardImageList extends State<CardImageList> {
   @override
   Widget build(BuildContext context) {
     widget.userBloc = BlocProvider.of<BlocUser>(context);
 
-    return Container(
+    return SizedBox(
       height: 350.0,
       child: StreamBuilder(
         stream: widget.userBloc.placesStream,
@@ -30,23 +30,14 @@ class _cardImageList extends State<CardImageList> {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
-              break;
             case ConnectionState.none:
               return const CircularProgressIndicator();
-              break;
             case ConnectionState.active:
-              return listViewPlaces(
-                  widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
-              break;
-
+              return listViewPlaces(widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
             case ConnectionState.done:
-              return listViewPlaces(
-                  widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
-              break;
+              return listViewPlaces(widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
             default:
-              return listViewPlaces(
-                  widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
-              break;
+              return listViewPlaces(widget.userBloc.buildPlaces(snapshot.data.docs, widget.user));
           }
         },
       ),
@@ -54,15 +45,13 @@ class _cardImageList extends State<CardImageList> {
   }
 
   Widget listViewPlaces(List<Place> places) {
-
     void setLiked(Place place) {
       setState(() {
         place.liked = !place.liked;
         widget.userBloc.likePlace(place, widget.user.uid.toString());
-        place.likes = place.liked? place.likes !+ 1 : place.likes !- 1;
+        place.likes = place.liked ? place.likes! + 1 : place.likes! - 1;
         widget.userBloc.placeSelectedSink.add(place);
       });
-
     }
 
     IconData iconDataLiked = Icons.favorite;
@@ -73,10 +62,7 @@ class _cardImageList extends State<CardImageList> {
       scrollDirection: Axis.horizontal,
       children: places.map((place) {
         return GestureDetector(
-          onTap: () {
-            print("CLICK PLACE: ${place.name}");
-            widget.userBloc.placeSelectedSink.add(place);
-          },
+          onTap: () => widget.userBloc.placeSelectedSink.add(place),
           child: CardImageWithFabIcon(
             pathImage: place.urlImage,
             width: 300.0,

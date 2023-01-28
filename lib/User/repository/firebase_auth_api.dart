@@ -10,8 +10,7 @@ class FirebaseAuthAPI {
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
     // Create a new credential
     final user = await _auth.signInWithCredential(GoogleAuthProvider.credential(

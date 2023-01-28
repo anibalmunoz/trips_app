@@ -5,14 +5,14 @@ import 'package:platzi_trips/User/model/user.dart' as ModelUs;
 import 'package:platzi_trips/User/ui/widgets/profile_place.dart';
 
 class CloudFirestoreApi {
-  final String USERS = "users";
-  final String PLACES = "places";
+  final String users = "users";
+  final String places = "places";
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void updateUserData(ModelUs.User user) async {
-    DocumentReference ref = _db.collection(USERS).doc(user.uid);
+    DocumentReference ref = _db.collection(users).doc(user.uid);
     return await ref.set({
       'uid': user.uid,
       'name': user.name,
@@ -25,7 +25,7 @@ class CloudFirestoreApi {
   }
 
   Future<void> updatePlaceData(Place place) async {
-    CollectionReference refPlaces = _db.collection(PLACES);
+    CollectionReference refPlaces = _db.collection(places);
 
     User? user = _auth.currentUser;
 
@@ -34,17 +34,16 @@ class CloudFirestoreApi {
       'description': place.description,
       'likes': place.likes,
       'urlImage': place.urlImage,
-      'userOwner': _db.doc("${USERS}/${user?.uid}"),
+      'userOwner': _db.doc("${users}/${user?.uid}"),
       'userLiked': FieldValue.arrayUnion([]),
       //tipo de dato conocido o llamado reference
     }).then((DocumentReference dr) {
       dr.get().then((DocumentSnapshot snapshot) {
         snapshot.id; // id de los lugares REFERENCIA ARRAY
 
-        DocumentReference refUsers = _db.collection(USERS).doc(user?.uid);
+        DocumentReference refUsers = _db.collection(users).doc(user?.uid);
         refUsers.update({
-          'myPlaces':
-              FieldValue.arrayUnion([_db.doc("${PLACES}/${snapshot.id}")])
+          'myPlaces': FieldValue.arrayUnion([_db.doc("${places}/${snapshot.id}")])
         });
       });
     });
@@ -54,27 +53,19 @@ class CloudFirestoreApi {
     List<ProfilePlace> profilePlaces = [];
 
     placesListSnapshot.forEach((p) {
-      profilePlaces.add(ProfilePlace(Place(
-          name: p['name'],
-          description: p['description'],
-          urlImage: p['urlImage'],
-          likes: p['likes'])));
+      profilePlaces.add(ProfilePlace(
+          Place(name: p['name'], description: p['description'], urlImage: p['urlImage'], likes: p['likes'])));
     });
 
     return profilePlaces;
   }
 
-  List<Place> buildPlaces(
-      List<DocumentSnapshot> placesListSnapshot, ModelUs.User user) {
+  List<Place> buildPlaces(List<DocumentSnapshot> placesListSnapshot, ModelUs.User user) {
     List<Place> places = [];
 
     placesListSnapshot.forEach((DocumentSnapshot p) {
-      Place place = Place(
-          id: p.id,
-          name: p["name"],
-          description: p["description"],
-          urlImage: p["urlImage"],
-          likes: p["likes"]);
+      Place place =
+          Place(id: p.id, name: p["name"], description: p["description"], urlImage: p["urlImage"], likes: p["likes"]);
 
       List<dynamic>? usersLikedRefs = p["userLiked"];
 
@@ -93,18 +84,14 @@ class CloudFirestoreApi {
   }
 
   Future likePlace(Place place, String uid) async {
-    await _db
-        .collection(PLACES)
-        .doc(place.id)
-        .get()
-        .then((DocumentSnapshot ds) {
+    await _db.collection(places).doc(place.id).get().then((DocumentSnapshot ds) {
       int likes = ds['likes'];
 
-      _db.collection(PLACES).doc(place.id).update({
+      _db.collection(places).doc(place.id).update({
         'likes': place.liked ? likes + 1 : likes - 1,
         'userLiked': place.liked
-            ? FieldValue.arrayUnion([_db.doc("${USERS}/${uid}")])
-            : FieldValue.arrayRemove([_db.doc("${USERS}/${uid}")])
+            ? FieldValue.arrayUnion([_db.doc("${users}/${uid}")])
+            : FieldValue.arrayRemove([_db.doc("${users}/${uid}")])
       });
     });
   }

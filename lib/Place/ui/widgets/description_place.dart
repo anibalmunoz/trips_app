@@ -5,53 +5,53 @@ import 'package:platzi_trips/User/bloc/bloc_user.dart';
 import '../../../widgets/button_purple.dart';
 
 class DescriptionPlace extends StatelessWidget {
-  String namePlace;
-  int stars;
-  String descriptionPlace;
+  // String namePlace;
+  // int stars;
+  // String descriptionPlace;
 
-  DescriptionPlace(this.namePlace, this.stars, this.descriptionPlace);
+  const DescriptionPlace({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     BlocUser userBloc = BlocProvider.of(context);
-    // TODO: implement build
 
-    final star_half = Container(
-      margin: EdgeInsets.only(top: 353.0, right: 3.0),
-      child: const Icon(
-        Icons.star_half,
-        color: Color(0xFFf2C611),
-      ),
-    );
+    // final star_half = Container(
+    //   margin: const EdgeInsets.only(top: 353.0, right: 3.0),
+    //   child: const Icon(
+    //     Icons.star_half,
+    //     color: Color(0xFFf2C611),
+    //   ),
+    // );
 
-    final star_border = Container(
-      margin: const EdgeInsets.only(top: 353.0, right: 3.0),
-      child: const Icon(
-        Icons.star_border,
-        color: Color(0xFFf2C611),
-      ),
-    );
+    // final star_border = Container(
+    //   margin: const EdgeInsets.only(top: 353.0, right: 3.0),
+    //   child: const Icon(
+    //     Icons.star_border,
+    //     color: Color(0xFFf2C611),
+    //   ),
+    // );
 
-    final star = Container(
-      margin: const EdgeInsets.only(top: 353.0, right: 3.0),
-      child: const Icon(
-        Icons.star,
-        color: Color(0xFFf2C611),
-      ),
-    );
+    // final star = Container(
+    //   margin: const EdgeInsets.only(top: 353.0, right: 3.0),
+    //   child: const Icon(
+    //     Icons.star,
+    //     color: Color(0xFFf2C611),
+    //   ),
+    // );
 
     Widget titleStars(Place place) {
       return Row(
         children: <Widget>[
           Flexible(
             child: Container(
-              margin: EdgeInsets.only(top: 350.0, left: 20.0, right: 20.0),
+              margin: const EdgeInsets.only(top: 350.0, left: 20.0, right: 20.0),
               child: Text(
                 place.name,
                 style: const TextStyle(
-                    fontFamily: "Lato",
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w900),
+                  fontFamily: "Lato",
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.w900,
+                ),
                 textAlign: TextAlign.left,
               ),
             ),
@@ -60,11 +60,8 @@ class DescriptionPlace extends StatelessWidget {
             margin: const EdgeInsets.only(top: 370.0, right: 10.0),
             child: Text(
               "Likes: ${place.likes}",
-              style: const TextStyle(
-                  fontFamily: "Lato",
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.amber),
+              style:
+                  const TextStyle(fontFamily: "Lato", fontSize: 18.0, fontWeight: FontWeight.w900, color: Colors.amber),
               textAlign: TextAlign.left,
             ),
           )
@@ -74,14 +71,11 @@ class DescriptionPlace extends StatelessWidget {
 
     Widget descriptionWidget(String descriptionPlace) {
       return Container(
-        margin: EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+        margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
         child: Text(
           descriptionPlace,
           style: const TextStyle(
-              fontFamily: "Lato",
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF56575a)),
+              fontFamily: "Lato", fontSize: 16.0, fontWeight: FontWeight.bold, color: Color(0xFF56575a)),
         ),
       );
     }
@@ -115,26 +109,13 @@ class DescriptionPlace extends StatelessWidget {
             ],
           );
         } else {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 400.0,
-                  left: 20.0,
-                  right: 20.0,
-                ),
-                child: const Text(
-                  "Selecciona un lugar",
-                  style: TextStyle(
-                    fontFamily: "Lato",
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w900,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-            ],
+          return Container(
+            margin: const EdgeInsets.only(top: 400.0, left: 20.0, right: 20.0),
+            child: const Text(
+              "Selecciona un lugar",
+              style: TextStyle(fontFamily: "Lato", fontSize: 30.0, fontWeight: FontWeight.w900),
+              textAlign: TextAlign.left,
+            ),
           );
         }
       },

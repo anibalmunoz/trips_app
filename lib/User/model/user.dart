@@ -30,12 +30,13 @@ class User {
 
   //myFavoritePlaces
   //myPlaces
-  User(
-      {Key? key,
-      @required this.uid,
-      required this.name,
-      required this.email,
-      required this.photoURL,
-      this.myPlaces,
-      this.myFavoritePlaces});
+  User({
+    Key? key,
+    this.uid,
+    required this.name,
+    required this.email,
+    required this.photoURL,
+    this.myPlaces,
+    this.myFavoritePlaces,
+  });
 }

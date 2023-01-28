@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:platzi_trips/User/bloc/bloc_user.dart';
 import 'package:platzi_trips/User/model/user.dart';
-import '../../../Place/model/place.dart';
-import 'package:platzi_trips/Place/model/place.dart';
 
 class ProfilePlacesList extends StatelessWidget {
   late BlocUser userBloc;
@@ -35,28 +33,24 @@ class ProfilePlacesList extends StatelessWidget {
     userBloc = BlocProvider.of<BlocUser>(context);
 
     return Container(
-      margin: const EdgeInsets.only(
-          top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
+      margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
       child: StreamBuilder(
           stream: userBloc.myPlacesListStream(user.uid.toString()),
           builder: (context, AsyncSnapshot snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
               case ConnectionState.done:
                 snapshot.data.documents;
-                return Column(
-                    children: userBloc.buildMyPlaces(snapshot.data.docs));
+                return Column(children: userBloc.buildMyPlaces(snapshot.data.docs));
               case ConnectionState.active:
-                return Column(
-                    children: userBloc.buildMyPlaces(snapshot.data.docs));
+                return Column(children: userBloc.buildMyPlaces(snapshot.data.docs));
 
               case ConnectionState.none:
-                return CircularProgressIndicator();
+                return const Center(child: CircularProgressIndicator());
 
               default:
-                return Column(
-                    children: userBloc.buildMyPlaces(snapshot.data.docs));
+                return Column(children: userBloc.buildMyPlaces(snapshot.data.docs));
             }
           }),
     );

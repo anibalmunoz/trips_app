@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:platzi_trips/User/model/user.dart';
 
 class Place {
   String? id;
@@ -16,7 +15,7 @@ class Place {
     required this.description,
     required this.urlImage,
     this.likes,
-    this.liked=false,
+    this.liked = false,
     this.id,
     //  this.userOwner
   });

@@ -6,9 +6,10 @@ import '../../../widgets/gradient_back.dart';
 import '../widgets/card_image_list.dart';
 
 class HeaderAppBar extends StatelessWidget {
+  const HeaderAppBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     BlocUser userBloc;
     userBloc = BlocProvider.of(context);
 
@@ -17,13 +18,9 @@ class HeaderAppBar extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
-            return const Center(
-              child:  CircularProgressIndicator(),
-            );
+            return const Center(child: Center(child: CircularProgressIndicator()));
           case ConnectionState.none:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: Center(child: CircularProgressIndicator()));
           case ConnectionState.active:
             return showPlacesData(snapshot);
           case ConnectionState.done:
@@ -33,32 +30,25 @@ class HeaderAppBar extends StatelessWidget {
         }
       },
     );
-    /*
-    return Stack(
-      children: <Widget>[GradientBack(altura: 250.0), CardImageList()],
-    );
-
-     */
   }
 
   Widget showPlacesData(AsyncSnapshot snapshot) {
     if (!snapshot.hasData || snapshot.hasError) {
       return Stack(
-        children: [
-          GradientBack(altura: 250.0),
-          Text("Usuario no logeado. Haz Login")
-        ],
+        children: [GradientBack(altura: 250.0), const Text("Usuario no logeado. Haz Login")],
       );
     } else {
       User user = User(
-          uid: snapshot.data.uid,
-          name: snapshot.data.displayName,
-          email: snapshot.data.email,
-          photoURL: snapshot.data.photoURL);
-
-      return Stack(
-        children: [GradientBack(altura: 250.0), CardImageList(user)],
+        uid: snapshot.data.uid,
+        name: snapshot.data.displayName,
+        email: snapshot.data.email,
+        photoURL: snapshot.data.photoURL,
       );
+
+      return Stack(children: [
+        GradientBack(altura: 250.0),
+        CardImageList(user),
+      ]);
     }
   }
 }

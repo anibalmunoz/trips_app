@@ -35,31 +35,26 @@ class ProfileTrips extends StatelessWidget {
 
   Widget showProfileData(AsyncSnapshot snapshot) {
     if (!snapshot.hasData || snapshot.hasError) {
-      print("No logueado");
+      debugPrint("No logueado");
       return Stack(
-        children: <Widget>[
+        children: [
           ProfileBackground(),
-          ListView(
-            children: const <Widget>[
-              Text("Usuario no logueado, haz login"),
-            ],
-          ),
+          ListView(children: const [Text("Usuario no logueado, haz login")]),
         ],
       );
     } else {
-      print("Usuario logueado");
+      debugPrint("Usuario logueado");
       var user = User(
-          uid: snapshot.data.uid,
-          name: snapshot.data.displayName,
-          email: snapshot.data.email,
-          photoURL: snapshot.data.photoURL);
+        uid: snapshot.data.uid,
+        name: snapshot.data.displayName,
+        email: snapshot.data.email,
+        photoURL: snapshot.data.photoURL,
+      );
 
       return Stack(
-        children: <Widget>[
+        children: [
           ProfileBackground(),
-          ListView(
-            children: <Widget>[ProfileHeader(user), ProfilePlacesList(user)],
-          ),
+          ListView(children: [ProfileHeader(user), ProfilePlacesList(user)])
         ],
       );
     }
